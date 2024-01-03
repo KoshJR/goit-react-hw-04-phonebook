@@ -1,61 +1,65 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import css from './Form.module.css';
 
-export class FormAddContacts extends Component {
-  state = {
-    name: '',
-    number: '',
+export const FormAddContacts = ({ handleAddContact }) => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+
+  const handleChange = event => {
+    const { name, value } = event.target;
+
+    if (name === 'name') {
+      setName(value);
+    } else if (name === 'number') {
+      setNumber(value);
+    }
   };
 
-  handleChange = event => {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
-  };
-  handleSubmit = event => {
+  const handleSubmit = event => {
     event.preventDefault();
-    this.props.handleAddContact(
+    handleAddContact(
       {
-        name: this.state.name,
-        number: this.state.number,
+        name,
+        number,
       },
-      this.clean
+      reset
     );
   };
-  clean = () => this.setState({ name: '', number: '' });
-  render() {
-    return (
-      <form
-        className={css.addForm}
-        onSubmit={event => this.handleSubmit(event)}
-      >
-        <div className={css.inputForm}>
-          <label htmlFor="name">Name:</label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            className={css.input}
-            onChange={event => this.handleChange(event)}
-            value={this.state.name}
-            required
-          />
-        </div>
-        <div className={css.inputForm}>
-          <label htmlFor="number">Number:</label>
-          <input
-            type="tel"
-            name="number"
-            id="number"
-            className={css.input}
-            value={this.state.number}
-            onChange={event => this.handleChange(event)}
-            required
-          />
-        </div>
-        <button className={css.addBtn} type="submit">
-          Add contact
-        </button>
-      </form>
-    );
-  }
-}
+
+  const reset = () => {
+    setName('');
+    setNumber('');
+  };
+
+  return (
+    <form className={css.addForm} onSubmit={event => handleSubmit(event)}>
+      <div className={css.inputForm}>
+        <label htmlFor="name">Name:</label>
+        <input
+          type="text"
+          name="name"
+          id="name"
+          className={css.input}
+          onChange={event => handleChange(event)}
+          value={name}
+          required
+        />
+      </div>
+      <div className={css.inputForm}>
+        <label htmlFor="number">Number:</label>
+        <input
+          type="tel"
+          name="number"
+          id="number"
+          className={css.input}
+          value={number}
+          onChange={event => handleChange(event)}
+          required
+        />
+      </div>
+      <button className={css.addBtn} type="submit">
+        Add contact
+      </button>
+    </form>
+  );
+};

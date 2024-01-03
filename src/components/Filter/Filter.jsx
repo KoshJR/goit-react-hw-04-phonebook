@@ -1,5 +1,5 @@
 import css from './Filter.module.css';
-export const Filter = ({ state, handleChange }) => {
+export const Filter = ({ filter, handleChange }) => {
   return (
     <div className={css.filterList}>
       <label htmlFor="name">Find contact by name</label>
@@ -8,7 +8,7 @@ export const Filter = ({ state, handleChange }) => {
         name="filter"
         className={css.filterInput}
         onChange={event => handleChange(event)}
-        value={state.filter}
+        value={filter}
         required
       />
     </div>
